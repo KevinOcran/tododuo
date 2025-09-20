@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "253897393155",
+    "project_id": "tododuo-24",
+    "storage_bucket": "tododuo-24.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:253897393155:android:4321d2f3851c9dd71bfa36",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_iIooeEjtVuMGd-P-tG9T03ZXdOtl0vQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
