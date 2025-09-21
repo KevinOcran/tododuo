@@ -19,9 +19,7 @@ class SellerDispatchHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Welcome, Seller of Dispatch Services!'),
-      ),
+      body: const Center(child: Text('Welcome, Seller of Dispatch Services!')),
     );
   }
 }

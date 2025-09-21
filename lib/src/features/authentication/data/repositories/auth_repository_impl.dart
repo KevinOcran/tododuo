@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tododuo/src/features/authentication/domain/repositories/auth_repository.dart';
+import '../../domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -26,14 +26,12 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
     required String role,
   }) async {
-    final userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
+    await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
     // TODO: Call a cloud function to set the custom claim for the role.
-    // For now, we'll just print it.
-    print('User created with role: $role');
   }
 
   @override

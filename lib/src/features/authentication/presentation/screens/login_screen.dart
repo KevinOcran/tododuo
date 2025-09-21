@@ -23,27 +23,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue<void>>(
-      authStateNotifierProvider,
-      (previous, next) {
-        next.when(
-          data: (_) {},
-          loading: () {
-            // Show a loading indicator if needed.
-          },
-          error: (error, stackTrace) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(error.toString())),
-            );
-          },
-        );
-      },
-    );
+    ref.listen<AsyncValue<void>>(authStateNotifierProvider, (previous, next) {
+      next.when(
+        data: (_) {},
+        loading: () {
+          // Show a loading indicator if needed.
+        },
+        error: (error, stackTrace) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(error.toString())));
+        },
+      );
+    });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
+      appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -69,10 +64,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                ref.read(authStateNotifierProvider.notifier).signIn(
-                      _emailController.text,
-                      _passwordController.text,
-                    );
+                ref
+                    .read(authStateNotifierProvider.notifier)
+                    .signIn(_emailController.text, _passwordController.text);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(double.infinity, 50),

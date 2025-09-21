@@ -19,9 +19,7 @@ class SellerGoodsHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Welcome, Seller of Goods!'),
-      ),
+      body: const Center(child: Text('Welcome, Seller of Goods!')),
     );
   }
 }

@@ -19,9 +19,7 @@ class BuyerHomeScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Welcome, Buyer!'),
-      ),
+      body: const Center(child: Text('Welcome, Buyer!')),
     );
   }
 }

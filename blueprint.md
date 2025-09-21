@@ -1,45 +1,84 @@
-# TodoDuo Blueprint
+# Tododuo Blueprint
 
-## Overview
+## 1. App Concept: Tododuo
 
-A cross-platform marketplace app built with Flutter and Firebase. It connects buyers with sellers of goods and independent dispatch riders.
+- **Name:** Tododuo
+- **Purpose:** A cross-platform marketplace where buyers order goods from sellers, and independent dispatch riders deliver them in an on-demand (Uber-style) model.
+- **Platforms:** iOS & Android (built with Flutter/Dart).
+- **Backend:** Firebase (utilizing the free Spark plan).
 
-## Key Features
+## 2. User Roles & Permissions
 
-*   **Multi-Tiered User System:** Admins, managers, sellers, and buyers with distinct roles and permissions.
-*   **Real-Time Dispatch System:** A dynamic system for assigning dispatch riders to orders, similar to ride-sharing services.
-*   **Integrated Payments:** Secure payment processing with options for Mobile Money and credit/debit cards, including an escrow system to protect buyers and sellers.
-*   **Order Tracking and Communication:** Real-time order tracking and in-app messaging between the buyer, seller, and dispatch rider.
-*   **Simplified Onboarding:** Guided processes for new sellers and dispatch riders to set up their accounts and profiles.
+The application is built around four primary user roles, each with specific permissions and access levels managed through Firebase Authentication’s custom claims.
 
-## Monetization
+### Implemented Features
 
-*   **Commissions:** A percentage-based commission on all successful transactions.
-*   **Fees:** Cancellation and return fees to ensure fair compensation for dispatch riders and sellers.
+*   **User Authentication:**
+    *   Users can sign up and log in using email and password.
+    *   Firebase Authentication handles user sessions.
+*   **Onboarding:**
+    *   Users select their role (buyer, seller, or dispatcher) after signing up.
+    *   Based on the role, users provide additional information:
+        *   **Buyer:** Full Name and Phone Number.
+        *   **Seller:** Store Name.
+        *   **Dispatcher:** Vehicle Plate Number.
+    *   User profiles, including role and specific details, are created in Firestore.
+    *   Users are redirected to the appropriate home screen based on their role.
 
-## Technical Stack
+### Latest Update: Enhanced Onboarding
 
-*   **Framework:** Flutter
-*   **Backend:** Firebase (Authentication, Firestore, Cloud Functions, Storage)
-*   **State Management:** Riverpod
-*   **Routing:** go_router
+*   **Goal:** To capture essential user details during the onboarding process to create more complete user profiles.
+*   **Steps Completed:**
+    1.  **Domain Models Updated:** Added `name` and `phoneNumber` to `BuyerProfile`, `storeName` to `SellerProfile`, and `vehicleNumberPlate` to `DispatchProfile`.
+    2.  **View Model Logic:** The `OnboardingViewModel` was updated to include `TextEditingController`s for the new fields and to pass this data during profile creation.
+    3.  **UI Enhancement:** The `OnboardingScreen` now dynamically displays input fields based on the user's selected role, allowing them to enter their specific details.
+    4.  **Code Generation:** Ran `build_runner` to update the `freezed` and `json_serializable` generated files.
+    5.  **Formatting:** Ensured code consistency with `dart format`.
 
-## Current Plan
+## 3. Project Structure
 
-*   **Phase 1: Core Authentication and User Roles:**
-    *   Implement Firebase Authentication with email/password and social login options.
-    *   Set up Firestore database with a basic user schema, including roles (admin, manager, seller, buyer).
-    *   Create a basic UI for user registration and login.
-
-*   **Phase 2: Seller and Dispatch Onboarding:**
-    *   Develop the UI and logic for sellers to create their stores and upload product information.
-    *   Develop the UI and logic for dispatch riders to create their profiles, including vehicle and payment details.
-
-*   **Phase 3: Core Order and Dispatch Logic:**
-    *   Implement the functionality for buyers to browse products and place orders.
-    *   Develop the core logic for the dispatch system, including order broadcasting and rider acceptance.
-
-*   **Phase 4: Payments and Tracking:**
-    *   Integrate a payment gateway for Mobile Money and card payments.
-    *   Implement the escrow system for holding and releasing funds.
-    *   Develop the real-time order tracking and in-app messaging features.
+```
+lib
+├── core
+│   └── providers
+│       └── firebase_providers.dart
+├── features
+│   ├── authentication
+│   │   ├── data
+│   │   │   └── repositories
+│   │   │       └── auth_repository_impl.dart
+│   │   ├── domain
+│   │   │   └── repositories
+│   │   │       └── auth_repository.dart
+│   │   └── presentation
+│   │       ├── providers
+│   │       │   └── auth_state_notifier.dart
+│   │       └── screens
+│   │           ├── buyer_home_screen.dart
+│   │           ├── login_screen.dart
+│   │           ├── seller_dispatch_home_screen.dart
+│   │           ├── seller_goods_home_screen.dart
+│   │           └── signup_screen.dart
+│   └── onboarding
+│       ├── data
+│       │   └── repositories
+│       │       ├── buyer_profile_repository_impl.dart
+│       │       ├── dispatch_profile_repository_impl.dart
+│       │       ├── seller_profile_repository_impl.dart
+│       │       └── user_profile_repository_impl.dart
+│       ├── domain
+│       │   ├── entities
+│       │   │   ├── buyer_profile.dart
+│       │   │   ├── dispatch_profile.dart
+│       │   │   ├── seller_profile.dart
+│       │   │   └── user_profile.dart
+│       │   └── repositories
+│       │       ├── buyer_profile_repository.dart
+│       │       ├── dispatch_profile_repository.dart
+│       │       ├── seller_profile_repository.dart
+│       │       └── user_profile_repository.dart
+│       └── presentation
+│           ├── onboarding_screen.dart
+│           └── onboarding_view_model.dart
+└── main.dart
+```

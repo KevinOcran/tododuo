@@ -47,7 +47,8 @@ class AuthStateNotifier extends StateNotifier<AsyncValue<void>> {
   }
 }
 
-final authStateNotifierProvider = StateNotifierProvider<AuthStateNotifier, AsyncValue<void>>((ref) {
-  final authRepository = ref.watch(authRepositoryProvider);
-  return AuthStateNotifier(authRepository);
-});
+final authStateNotifierProvider =
+    StateNotifierProvider<AuthStateNotifier, AsyncValue<void>>((ref) {
+      final authRepository = ref.watch(authRepositoryProvider);
+      return AuthStateNotifier(authRepository);
+    });

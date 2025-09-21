@@ -24,29 +24,24 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue<void>>(
-      authStateNotifierProvider,
-      (previous, next) {
-        next.when(
-          data: (_) {
-            // On successful signup, GoRouter will handle the redirect automatically.
-          },
-          loading: () {
-            // Show a loading indicator if needed.
-          },
-          error: (error, stackTrace) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(error.toString())),
-            );
-          },
-        );
-      },
-    );
+    ref.listen<AsyncValue<void>>(authStateNotifierProvider, (previous, next) {
+      next.when(
+        data: (_) {
+          // On successful signup, GoRouter will handle the redirect automatically.
+        },
+        loading: () {
+          // Show a loading indicator if needed.
+        },
+        error: (error, stackTrace) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(error.toString())));
+        },
+      );
+    });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-      ),
+      appBar: AppBar(title: const Text('Sign Up')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -71,16 +66,19 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               },
               items: <String>['buyer', 'seller_goods', 'seller_dispatch']
                   .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  })
+                  .toList(),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                ref.read(authStateNotifierProvider.notifier).signUp(
+                ref
+                    .read(authStateNotifierProvider.notifier)
+                    .signUp(
                       _emailController.text,
                       _passwordController.text,
                       _selectedRole,
