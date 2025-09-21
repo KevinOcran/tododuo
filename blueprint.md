@@ -1,84 +1,35 @@
-# Tododuo Blueprint
+# Seller Goods Blueprint
 
-## 1. App Concept: Tododuo
+## Overview
 
-- **Name:** Tododuo
-- **Purpose:** A cross-platform marketplace where buyers order goods from sellers, and independent dispatch riders deliver them in an on-demand (Uber-style) model.
-- **Platforms:** iOS & Android (built with Flutter/Dart).
-- **Backend:** Firebase (utilizing the free Spark plan).
+This document outlines the project structure, features, and implementation details for the Seller Goods application. The app allows sellers to manage their stores and products.
 
-## 2. User Roles & Permissions
+## Project Structure
 
-The application is built around four primary user roles, each with specific permissions and access levels managed through Firebase Authentication’s custom claims.
+The project is structured by feature, with each feature having its own `data`, `domain`, and `presentation` layers. This promotes separation of concerns and makes the codebase easier to maintain.
 
-### Implemented Features
+## Features
 
-*   **User Authentication:**
-    *   Users can sign up and log in using email and password.
-    *   Firebase Authentication handles user sessions.
-*   **Onboarding:**
-    *   Users select their role (buyer, seller, or dispatcher) after signing up.
-    *   Based on the role, users provide additional information:
-        *   **Buyer:** Full Name and Phone Number.
-        *   **Seller:** Store Name.
-        *   **Dispatcher:** Vehicle Plate Number.
-    *   User profiles, including role and specific details, are created in Firestore.
-    *   Users are redirected to the appropriate home screen based on their role.
+### Products
 
-### Latest Update: Enhanced Onboarding
+*   Sellers can create, read, update, and delete products.
+*   Products have a name, description, price, and a list of images.
+*   Product images are uploaded to Firebase Storage.
 
-*   **Goal:** To capture essential user details during the onboarding process to create more complete user profiles.
-*   **Steps Completed:**
-    1.  **Domain Models Updated:** Added `name` and `phoneNumber` to `BuyerProfile`, `storeName` to `SellerProfile`, and `vehicleNumberPlate` to `DispatchProfile`.
-    2.  **View Model Logic:** The `OnboardingViewModel` was updated to include `TextEditingController`s for the new fields and to pass this data during profile creation.
-    3.  **UI Enhancement:** The `OnboardingScreen` now dynamically displays input fields based on the user's selected role, allowing them to enter their specific details.
-    4.  **Code Generation:** Ran `build_runner` to update the `freezed` and `json_serializable` generated files.
-    5.  **Formatting:** Ensured code consistency with `dart format`.
+## Implementation Details
 
-## 3. Project Structure
+*   **State Management:** `flutter_riverpod` is used for state management, providing a clean and scalable way to manage application state.
+*   **Database:** Cloud Firestore is used to store product and store data.
+*   **Storage:** Firebase Storage is used to store product images.
+*   **Code Generation:** `freezed` is used to generate immutable data classes, and `json_serializable` is used for JSON serialization/deserialization.
 
-```
-lib
-├── core
-│   └── providers
-│       └── firebase_providers.dart
-├── features
-│   ├── authentication
-│   │   ├── data
-│   │   │   └── repositories
-│   │   │       └── auth_repository_impl.dart
-│   │   ├── domain
-│   │   │   └── repositories
-│   │   │       └── auth_repository.dart
-│   │   └── presentation
-│   │       ├── providers
-│   │       │   └── auth_state_notifier.dart
-│   │       └── screens
-│   │           ├── buyer_home_screen.dart
-│   │           ├── login_screen.dart
-│   │           ├── seller_dispatch_home_screen.dart
-│   │           ├── seller_goods_home_screen.dart
-│   │           └── signup_screen.dart
-│   └── onboarding
-│       ├── data
-│       │   └── repositories
-│       │       ├── buyer_profile_repository_impl.dart
-│       │       ├── dispatch_profile_repository_impl.dart
-│       │       ├── seller_profile_repository_impl.dart
-│       │       └── user_profile_repository_impl.dart
-│       ├── domain
-│       │   ├── entities
-│       │   │   ├── buyer_profile.dart
-│       │   │   ├── dispatch_profile.dart
-│       │   │   ├── seller_profile.dart
-│       │   │   └── user_profile.dart
-│       │   └── repositories
-│       │       ├── buyer_profile_repository.dart
-│       │       ├── dispatch_profile_repository.dart
-│       │       ├── seller_profile_repository.dart
-│       │       └── user_profile_repository.dart
-│       └── presentation
-│           ├── onboarding_screen.dart
-│           └── onboarding_view_model.dart
-└── main.dart
-```
+## Current Task: Add Image Upload Functionality
+
+*   **Goal:** Allow sellers to upload images for their products.
+*   **Steps:**
+    1.  Update the `Product` entity to include a list of image URLs.
+    2.  Run `build_runner` to update the generated `Product` model.
+    3.  Add the `image_picker` dependency to `pubspec.yaml`.
+    4.  Update `add_edit_product_screen.dart` to allow users to pick and display images.
+    5.  Update `product_viewmodel.dart` to handle image uploads.
+    6.  Update the `product_repository.dart` to upload images to Firebase Storage.

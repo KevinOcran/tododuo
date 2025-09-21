@@ -16,6 +16,17 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
   Widget build(BuildContext context) {
     final viewModel = ref.watch(onboardingViewModelProvider);
 
+    ref.listen(onboardingViewModelProvider, (previous, next) {
+      if (next.isLoading) return;
+      if (next.hasError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: ${next.error}')),
+        );
+      } else {
+        context.go('/home');
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(title: const Text('Complete Your Profile')),
       body: SingleChildScrollView(
@@ -56,11 +67,8 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               ElevatedButton(
                 onPressed: viewModel.selectedRole == null || viewModel.isLoading
                     ? null
-                    : () async {
-                        await viewModel.completeOnboarding();
-                        if (mounted) {
-                          context.go('/home');
-                        }
+                    : () {
+                        viewModel.completeOnboarding();
                       },
                 child: viewModel.isLoading
                     ? const CircularProgressIndicator()

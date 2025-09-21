@@ -13,7 +13,9 @@ import '../data/repositories/user_profile_repository_impl.dart';
 import '../domain/entities/user_role.dart';
 
 // Providers for Firebase services
-final firestoreProvider = Provider<FirebaseFirestore>((ref) => FirebaseFirestore.instance);
+final firestoreProvider = Provider<FirebaseFirestore>(
+  (ref) => FirebaseFirestore.instance,
+);
 final authProvider = Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
 final onboardingViewModelProvider = ChangeNotifierProvider((ref) {
@@ -37,6 +39,12 @@ class OnboardingViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  bool _hasError = false;
+  bool get hasError => _hasError;
+
+  String? _error;
+  String? get error => _error;
+
   // Text editing controllers
   final nameController = TextEditingController();
   final phoneController = TextEditingController();
@@ -58,11 +66,12 @@ class OnboardingViewModel extends ChangeNotifier {
   Future<void> completeOnboarding() async {
     if (_selectedRole == null) return;
     _setLoading(true);
+    _setError(null);
 
     final user = _auth.currentUser;
     if (user == null) {
+      _setError('User not logged in');
       _setLoading(false);
-      // Handle error: user not logged in
       return;
     }
 
@@ -70,7 +79,10 @@ class OnboardingViewModel extends ChangeNotifier {
       final userProfile = UserProfile(
         id: user.uid,
         email: user.email!,
-        role: _selectedRole.toString().split('.').last, // Convert enum to string
+        role: _selectedRole
+            .toString()
+            .split('.')
+            .last, // Convert enum to string
       );
       await _userProfileRepository.createUserProfile(userProfile);
 
@@ -101,7 +113,7 @@ class OnboardingViewModel extends ChangeNotifier {
           break;
       }
     } catch (e) {
-      // Handle error
+      _setError(e.toString());
     } finally {
       _setLoading(false);
     }
@@ -109,6 +121,12 @@ class OnboardingViewModel extends ChangeNotifier {
 
   void _setLoading(bool value) {
     _isLoading = value;
+    notifyListeners();
+  }
+
+  void _setError(String? value) {
+    _error = value;
+    _hasError = value != null;
     notifyListeners();
   }
 
