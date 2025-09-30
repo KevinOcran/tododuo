@@ -71,4 +71,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'tododuo-24.firebasestorage.app',
     iosBundleId: 'com.example.myapp',
   );
+
 }
