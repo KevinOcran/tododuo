@@ -1,1 +1,49 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"tododuo-24","appId":"1:253897393155:android:4321d2f3851c9dd71bfa36","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"tododuo-24","configurations":{"android":"1:253897393155:android:4321d2f3851c9dd71bfa36","ios":"1:253897393155:ios:377cf37b488be6901bfa36","web":"1:253897393155:web:ceb1e6b26e6223021bfa36"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tododuo-24",
+          "appId": "1:253897393155:android:4321d2f3851c9dd71bfa36",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tododuo-24",
+          "configurations": {
+            "android": "1:253897393155:android:4321d2f3851c9dd71bfa36",
+            "ios": "1:253897393155:ios:377cf37b488be6901bfa36",
+            "web": "1:253897393155:web:ceb1e6b26e6223021bfa36"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "europe-west2",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ],
+  "storage": {
+    "rules": "storage.rules"
+  }
+}
